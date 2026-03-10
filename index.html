@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TNG T-Suite | Corporate Portal</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+    .fade-in { animation: fadeIn 0.4s ease-in forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    
+    /* Corporate Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden text-gray-800">
+
+  <div id="login-view" class="fixed inset-0 z-[100] bg-[#111827] flex items-center justify-center p-6 transition-opacity duration-500">
+    <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+    
+    <div class="bg-white p-10 md:p-12 rounded-xl shadow-2xl w-full max-w-md relative overflow-hidden z-10">
+      <div class="absolute top-0 left-0 w-full h-2 bg-[#D71A21]"></div>
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-serif font-bold text-[#111827] uppercase tracking-widest mb-1">T-Suite</h1>
+        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Tyler Nicholas Group HR Portal</p>
+      </div>
+      
+      <div class="space-y-5">
+        <div>
+          <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Employee ID</label>
+          <input type="text" id="login-eid" placeholder="e.g. TNG-001" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded font-mono font-bold focus:border-[#D71A21] focus:ring-1 focus:ring-[#D71A21] outline-none transition-all">
+        </div>
+        <div>
+          <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Corporate Email</label>
+          <input type="email" id="login-email" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded font-medium focus:border-[#D71A21] focus:ring-1 focus:ring-[#D71A21] outline-none transition-all">
+        </div>
+        <div>
+          <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Passcode</label>
+          <input type="password" id="login-password" onkeypress="if(event.key === 'Enter') attemptLogin();" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded focus:border-[#D71A21] focus:ring-1 focus:ring-[#D71A21] outline-none transition-all">
+        </div>
+        
+        <div id="login-error" class="hidden text-[#D71A21] text-xs font-bold text-center bg-red-50 p-3 rounded border border-red-100"></div>
+        
+        <button onclick="attemptLogin()" id="login-btn" class="w-full bg-[#111827] hover:bg-[#D71A21] text-white font-bold py-4 rounded transition-colors uppercase tracking-widest flex justify-center items-center text-xs shadow-md mt-4">
+          Secure Login <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="dashboard-view" class="hidden w-full h-full flex bg-gray-50 fade-in">
+    
+    <aside class="w-64 bg-[#111827] text-white flex flex-col shadow-xl z-20 flex-shrink-0">
+      <div class="p-6 border-b border-gray-800 text-center">
+        <h2 class="text-2xl font-serif font-bold tracking-widest uppercase">T-Suite</h2>
+        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-1">Tyler Nicholas Group</p>
+      </div>
+      
+      <div class="p-6 border-b border-gray-800 flex items-center">
+        <div class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center mr-3 border border-gray-600">
+          <i class="fa-solid fa-user text-gray-300"></i>
+        </div>
+        <div class="overflow-hidden">
+          <p class="text-sm font-bold truncate" id="sidebar-name">Loading...</p>
+          <p class="text-[10px] text-[#D71A21] font-bold uppercase tracking-widest" id="sidebar-role">Staff</p>
+        </div>
+      </div>
+      
+      <nav class="flex-grow p-4 space-y-1 overflow-y-auto">
+        <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold px-4 pt-2 pb-2">Employment</p>
+        <button onclick="switchTab('home')" id="tab-home" class="nav-btn w-full text-left px-4 py-2.5 bg-[#D71A21] text-white rounded text-sm font-bold shadow transition-colors"><i class="fa-solid fa-house w-6 text-center"></i> Home</button>
+        <button onclick="switchTab('profile')" id="tab-profile" class="nav-btn w-full text-left px-4 py-2.5 hover:bg-gray-800 text-gray-300 hover:text-white rounded text-sm font-semibold transition-colors"><i class="fa-solid fa-id-badge w-6 text-center"></i> My Profile</button>
+        <button onclick="alert('Leave System coming in Phase 2')" class="w-full text-left px-4 py-2.5 hover:bg-gray-800 text-gray-300 hover:text-white rounded text-sm font-semibold transition-colors"><i class="fa-solid fa-calendar-day w-6 text-center"></i> Time & Leave</button>
+        <button onclick="alert('Ledger coming in Phase 2')" class="w-full text-left px-4 py-2.5 hover:bg-gray-800 text-gray-300 hover:text-white rounded text-sm font-semibold transition-colors"><i class="fa-solid fa-clipboard-list w-6 text-center"></i> HR Ledger</button>
+        <button onclick="alert('Meetings coming in Phase 2')" class="w-full text-left px-4 py-2.5 hover:bg-gray-800 text-gray-300 hover:text-white rounded text-sm font-semibold transition-colors"><i class="fa-solid fa-users-viewfinder w-6 text-center"></i> Meetings</button>
+
+        <div id="admin-nav-section" class="hidden">
+            <p class="text-[10px] text-[#D71A21] uppercase tracking-widest font-bold px-4 pt-6 pb-2">Administration</p>
+            <button class="w-full text-left px-4 py-2.5 hover:bg-gray-800 text-gray-300 hover:text-white rounded text-sm font-semibold transition-colors"><i class="fa-solid fa-users-gear w-6 text-center"></i> Staff Directory</button>
+            <button class="w-full text-left px-4 py-2.5 hover:bg-gray-800 text-gray-300 hover:text-white rounded text-sm font-semibold transition-colors"><i class="fa-solid fa-file-shield w-6 text-center"></i> Leave Approvals</button>
+            <button class="w-full text-left px-4 py-2.5 hover:bg-gray-800 text-gray-300 hover:text-white rounded text-sm font-semibold transition-colors"><i class="fa-solid fa-gavel w-6 text-center"></i> Issue Infraction</button>
+        </div>
+      </nav>
+      
+      <div class="p-4 border-t border-gray-800">
+        <button onclick="logout()" class="w-full bg-gray-800 hover:bg-red-900 text-white font-bold py-3 rounded text-xs uppercase tracking-widest transition-colors shadow">
+          Sign Out <i class="fa-solid fa-power-off ml-2"></i>
+        </button>
+      </div>
+    </aside>
+
+    <main class="flex-grow flex flex-col h-screen overflow-hidden relative">
+      
+      <header class="bg-white shadow-sm py-4 px-8 flex justify-between items-center z-10 border-b border-gray-200">
+        <h2 class="text-xl font-bold text-[#111827] uppercase tracking-tight" id="section-title">Corporate Dashboard</h2>
+        <div class="flex items-center gap-4">
+            <button onclick="alert('Email interface opening...')" class="bg-gray-100 hover:bg-gray-200 text-[#111827] px-4 py-2 rounded text-xs font-bold uppercase tracking-widest transition-colors border border-gray-200">
+                <i class="fa-solid fa-envelope mr-2"></i> Contact HR
+            </button>
+        </div>
+      </header>
+
+      <div class="flex-grow p-8 overflow-y-auto">
+        
+        <div id="view-home" class="view-section block max-w-6xl mx-auto space-y-8">
+            <div class="bg-[#111827] rounded-2xl p-8 text-white shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-10 opacity-10"><i class="fa-solid fa-building text-9xl"></i></div>
+                <div class="relative z-10">
+                    <h3 class="text-3xl font-bold mb-2">Welcome, <span id="welcome-name" class="text-[#D71A21]">Staff</span></h3>
+                    <p class="text-gray-400 font-medium">Tyler Nicholas Group Central Operations</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+                    <div class="bg-gray-50 p-5 border-b border-gray-200 flex justify-between items-center">
+                        <h4 class="font-bold text-[#111827] uppercase tracking-widest text-sm"><i class="fa-solid fa-bullhorn text-[#D71A21] mr-2"></i> Corporate Announcements</h4>
+                    </div>
+                    <div id="announcement-feed" class="p-6 space-y-6 flex-grow overflow-y-auto max-h-[400px]">
+                        <div class="text-center py-10 text-gray-400 font-bold text-xs uppercase tracking-widest"><i class="fa-solid fa-circle-notch fa-spin mb-2 text-2xl"></i><br>Syncing Feed...</div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+                    <div class="bg-gray-50 p-5 border-b border-gray-200">
+                        <h4 class="font-bold text-[#111827] uppercase tracking-widest text-sm"><i class="fa-solid fa-link text-[#D71A21] mr-2"></i> Network Links</h4>
+                    </div>
+                    <div class="p-6 flex flex-col gap-4">
+                        <a href="#" class="flex items-center p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-[#5865F2] hover:bg-[#5865F2]/5 transition-colors group">
+                            <div class="w-10 h-10 bg-[#5865F2] rounded text-white flex items-center justify-center mr-4 shadow"><i class="fa-brands fa-discord text-xl"></i></div>
+                            <div><p class="font-bold text-[#111827] text-sm group-hover:text-[#5865F2]">HQ Discord Server</p><p class="text-[10px] text-gray-500 uppercase tracking-widest">Connect with staff</p></div>
+                        </a>
+                        <a href="#" class="flex items-center p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-[#25D366] hover:bg-[#25D366]/5 transition-colors group">
+                            <div class="w-10 h-10 bg-[#25D366] rounded text-white flex items-center justify-center mr-4 shadow"><i class="fa-brands fa-whatsapp text-xl"></i></div>
+                            <div><p class="font-bold text-[#111827] text-sm group-hover:text-[#25D366]">Corporate WhatsApp</p><p class="text-[10px] text-gray-500 uppercase tracking-widest">Emergency alerts</p></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-profile" class="view-section hidden max-w-4xl mx-auto">
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
+                <div class="h-32 bg-[#111827] border-b-4 border-[#D71A21] relative"></div>
+                <div class="px-8 pb-8 relative">
+                    <div class="absolute -top-16 left-8 w-32 h-32 bg-white rounded-xl shadow-lg border-4 border-white flex items-center justify-center text-[#111827]">
+                        <i class="fa-solid fa-id-badge text-6xl text-gray-300"></i>
+                    </div>
+                    
+                    <div class="mt-20 flex justify-between items-start border-b border-gray-100 pb-6 mb-6">
+                        <div>
+                            <h3 class="text-3xl font-bold text-[#111827]" id="prof-name">Loading...</h3>
+                            <p class="text-[#D71A21] font-bold uppercase tracking-widest text-sm mt-1" id="prof-role">Loading...</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1">Employee ID</p>
+                            <p class="font-mono bg-gray-100 px-3 py-1 rounded text-[#111827] font-bold border border-gray-200" id="prof-eid">---</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-6">
+                            <div><p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-sitemap mr-1"></i> Department</p><p class="font-semibold text-gray-800" id="prof-dept">---</p></div>
+                            <div><p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-envelope mr-1"></i> Corporate Email</p><p class="font-semibold text-gray-800" id="prof-email">---</p></div>
+                            <div><p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-cake-candles mr-1"></i> Date of Birth</p><p class="font-semibold text-gray-800" id="prof-dob">---</p></div>
+                        </div>
+                        <div class="space-y-6">
+                            <div><p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-earth-americas mr-1"></i> Country of Residency</p><p class="font-semibold text-gray-800" id="prof-country">---</p></div>
+                            <div><p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-clock mr-1"></i> Timezone</p><p class="font-semibold text-gray-800" id="prof-tz">---</p></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <p class="text-[10px] text-[#D71A21] font-bold uppercase tracking-widest mb-2">About Me</p>
+                        <p class="text-sm text-gray-700 leading-relaxed" id="prof-about">No biographic information provided.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    let supabase = null;
+    
+    // SETUP SUPABASE HERE
+    const SUPABASE_URL = 'https://tihkhclpzpdhlcyalyhy.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpaGtoY2xwenBkaGxjeWFseWh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNjI3MTEsImV4cCI6MjA4ODczODcxMX0.C_-9TauzBfFBWqGJVzvhurCeJhHgOQrIH8yajgwor4k';
+
+    let currentUserProfile = null;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const checkSupabase = setInterval(() => {
+        if (window.supabase) {
+          clearInterval(checkSupabase); 
+          supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+          checkSession();
+        }
+      }, 100);
+    });
+
+    // --- AUTHENTICATION LOGIC ---
+    async function attemptLogin() {
+      const eid = document.getElementById('login-eid').value.trim();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const btn = document.getElementById('login-btn');
+      const err = document.getElementById('login-error');
+      
+      if (!eid || !email || !password) { err.innerText = "All fields are required."; err.classList.remove('hidden'); return; }
+
+      btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i>`;
+      err.classList.add('hidden');
+      
+      try {
+        // 1. Authenticate via Email/Password
+        const { data: authData, error: authError } = await supabase.auth.signInWithPassword({ email, password });
+        
+        if (authError) throw authError;
+
+        // 2. Validate Employee ID against their Profile
+        if (authData.user) {
+            const { data: profile, error: profileError } = await supabase
+                .from('tng_profiles')
+                .select('*, tng_departments(name), tng_roles(title)')
+                .eq('id', authData.user.id)
+                .single();
+
+            if (profileError || !profile) {
+                await supabase.auth.signOut();
+                throw new Error("No corporate profile found for this account.");
+            }
+
+            if (profile.employee_id !== eid) {
+                await supabase.auth.signOut();
+                throw new Error("Employee ID does not match records.");
+            }
+
+            // Success
+            btn.innerHTML = `Authenticated`; 
+            setTimeout(() => { loadDashboard(profile); }, 500);
+        }
+      } catch (exception) { 
+          err.innerText = exception.message || "Authentication failed."; 
+          err.classList.remove('hidden'); 
+          btn.innerHTML = `Secure Login <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i>`; 
+      }
+    }
+
+    async function checkSession() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session && session.user) {
+          // Fetch profile data
+          const { data: profile } = await supabase.from('tng_profiles').select('*, tng_departments(name), tng_roles(title)').eq('id', session.user.id).single();
+          if(profile) loadDashboard(profile); else showLogin();
+      } else {
+          showLogin();
+      }
+    }
+    
+    function showLogin() {
+      document.getElementById('dashboard-view').classList.add('hidden');
+      document.getElementById('login-view').classList.remove('hidden', 'opacity-0');
+    }
+
+    async function logout() { if(supabase) { await supabase.auth.signOut(); window.location.reload(); } }
+
+    // --- DASHBOARD RENDERING ---
+    function loadDashboard(profile) {
+      currentUserProfile = profile;
+      document.getElementById('login-view').classList.add('hidden');
+      document.getElementById('dashboard-view').classList.remove('hidden');
+      
+      // Populate Sidebar & Welcome
+      document.getElementById('sidebar-name').innerText = profile.full_name;
+      document.getElementById('sidebar-role').innerText = profile.access_level;
+      document.getElementById('welcome-name').innerText = profile.full_name.split(' ')[0]; // First name
+
+      // Populate Profile View
+      document.getElementById('prof-name').innerText = profile.full_name;
+      document.getElementById('prof-eid').innerText = profile.employee_id;
+      document.getElementById('prof-email').innerText = profile.email;
+      document.getElementById('prof-dept').innerText = profile.tng_departments ? profile.tng_departments.name : 'Unassigned';
+      document.getElementById('prof-role').innerText = profile.tng_roles ? profile.tng_roles.title : 'General Staff';
+      document.getElementById('prof-dob').innerText = profile.date_of_birth ? new Date(profile.date_of_birth).toLocaleDateString() : 'Not Provided';
+      document.getElementById('prof-country').innerText = profile.country || 'Not Provided';
+      document.getElementById('prof-tz').innerText = profile.timezone || 'Not Provided';
+      if(profile.about_me) document.getElementById('prof-about').innerText = profile.about_me;
+
+      // Unhide HR/Admin controls if applicable
+      if (profile.access_level === 'HR' || profile.access_level === 'Admin') {
+          document.getElementById('admin-nav-section').classList.remove('hidden');
+      }
+
+      fetchAnnouncements();
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.className = "nav-btn w-full text-left px-4 py-2.5 hover:bg-gray-800 text-gray-300 hover:text-white rounded text-sm font-semibold transition-colors");
+      
+      document.getElementById(`view-${tab}`).classList.remove('hidden');
+      document.getElementById(`tab-${tab}`).className = "nav-btn w-full text-left px-4 py-2.5 bg-[#D71A21] text-white rounded text-sm font-bold shadow transition-colors";
+      
+      const titles = { 'home': 'Corporate Dashboard', 'profile': 'My Employee Profile' };
+      document.getElementById('section-title').innerText = titles[tab] || 'TNG Portal';
+    }
+
+    // --- FETCH DATA ---
+    async function fetchAnnouncements() {
+        try {
+            const { data } = await supabase.from('tng_announcements').select('*, tng_profiles(full_name, tng_roles(title))').order('created_at', { ascending: false });
+            const feed = document.getElementById('announcement-feed');
+            
+            if (!data || data.length === 0) {
+                feed.innerHTML = `<div class="text-center py-10 text-gray-400 font-medium text-sm">No recent announcements.</div>`;
+                return;
+            }
+
+            let html = '';
+            data.forEach(a => {
+                const date = new Date(a.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                const authorName = a.tng_profiles ? a.tng_profiles.full_name : 'Administration';
+                const authorRole = a.tng_profiles && a.tng_profiles.tng_roles ? a.tng_profiles.tng_roles.title : 'TNG';
+                
+                html += `
+                <div class="bg-white border border-gray-100 p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-start mb-3 border-b border-gray-50 pb-3">
+                        <div>
+                            <h5 class="font-bold text-[#111827] text-lg leading-tight">${a.title}</h5>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Posted by ${authorName} (${authorRole})</p>
+                        </div>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50 px-2 py-1 rounded">${date}</span>
+                    </div>
+                    <p class="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">${a.content}</p>
+                </div>`;
+            });
+            feed.innerHTML = html;
+        } catch(e) {
+            document.getElementById('announcement-feed').innerHTML = `<div class="text-center py-10 text-red-500 font-bold text-xs uppercase">Error loading feed</div>`;
+        }
+    }
+  </script>
+</body>
+</html>
