@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TNG T-Suite | Corporate Portal</title>
   
+  <link rel="icon" href="/favicon.ico" id="favicon" />
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
@@ -64,13 +66,10 @@
         <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-1">Tyler Nicholas Group</p>
       </div>
       
-      <div class="p-6 border-b border-gray-800 flex items-center">
-        <div class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center mr-3 border border-gray-600">
-          <i class="fa-solid fa-user text-gray-300"></i>
-        </div>
+      <div class="p-6 border-b border-gray-800">
         <div class="overflow-hidden">
           <p class="text-sm font-bold truncate" id="sidebar-name">Loading...</p>
-          <p class="text-[10px] text-[#D71A21] font-bold uppercase tracking-widest" id="sidebar-role">Staff</p>
+          <p class="text-[10px] text-[#D71A21] font-bold uppercase tracking-widest mt-1" id="sidebar-role">Staff</p>
         </div>
       </div>
       
@@ -102,9 +101,9 @@
       <header class="bg-white shadow-sm py-4 px-8 flex justify-between items-center z-10 border-b border-gray-200">
         <h2 class="text-xl font-bold text-[#111827] uppercase tracking-tight" id="section-title">Corporate Dashboard</h2>
         <div class="flex items-center gap-4">
-            <button onclick="alert('Email interface opening...')" class="bg-gray-100 hover:bg-gray-200 text-[#111827] px-4 py-2 rounded text-xs font-bold uppercase tracking-widest transition-colors border border-gray-200">
+            <a href="mailto:hr@tylernicholasgroup.com" class="bg-gray-100 hover:bg-gray-200 text-[#111827] px-4 py-2 rounded text-xs font-bold uppercase tracking-widest transition-colors border border-gray-200 inline-flex items-center">
                 <i class="fa-solid fa-envelope mr-2"></i> Contact HR
-            </button>
+            </a>
         </div>
       </header>
 
@@ -134,11 +133,11 @@
                         <h4 class="font-bold text-[#111827] uppercase tracking-widest text-sm"><i class="fa-solid fa-link text-[#D71A21] mr-2"></i> Network Links</h4>
                     </div>
                     <div class="p-6 flex flex-col gap-4">
-                        <a href="#" class="flex items-center p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-[#5865F2] hover:bg-[#5865F2]/5 transition-colors group">
+                        <a href="https://discord.gg/9MDNdC9q8B" target="_blank" class="flex items-center p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-[#5865F2] hover:bg-[#5865F2]/5 transition-colors group">
                             <div class="w-10 h-10 bg-[#5865F2] rounded text-white flex items-center justify-center mr-4 shadow"><i class="fa-brands fa-discord text-xl"></i></div>
                             <div><p class="font-bold text-[#111827] text-sm group-hover:text-[#5865F2]">HQ Discord Server</p><p class="text-[10px] text-gray-500 uppercase tracking-widest">Connect with staff</p></div>
                         </a>
-                        <a href="#" class="flex items-center p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-[#25D366] hover:bg-[#25D366]/5 transition-colors group">
+                        <a href="https://chat.whatsapp.com/LEtPsHrprdyI8RdThw9SqM?mode=gi_t" target="_blank" class="flex items-center p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-[#25D366] hover:bg-[#25D366]/5 transition-colors group">
                             <div class="w-10 h-10 bg-[#25D366] rounded text-white flex items-center justify-center mr-4 shadow"><i class="fa-brands fa-whatsapp text-xl"></i></div>
                             <div><p class="font-bold text-[#111827] text-sm group-hover:text-[#25D366]">Corporate WhatsApp</p><p class="text-[10px] text-gray-500 uppercase tracking-widest">Emergency alerts</p></div>
                         </a>
@@ -149,13 +148,10 @@
 
         <div id="view-profile" class="view-section hidden max-w-4xl mx-auto">
             <div class="bg-white rounded-2xl border border-gray-200 shadow-lg overflow-hidden">
-                <div class="h-32 bg-[#111827] border-b-4 border-[#D71A21] relative"></div>
-                <div class="px-8 pb-8 relative">
-                    <div class="absolute -top-16 left-8 w-32 h-32 bg-white rounded-xl shadow-lg border-4 border-white flex items-center justify-center text-[#111827]">
-                        <i class="fa-solid fa-id-badge text-6xl text-gray-300"></i>
-                    </div>
+                <div class="h-20 bg-[#111827] border-b-4 border-[#D71A21]"></div>
+                <div class="px-8 pb-8 pt-8 relative">
                     
-                    <div class="mt-20 flex justify-between items-start border-b border-gray-100 pb-6 mb-6">
+                    <div class="flex justify-between items-start border-b border-gray-100 pb-6 mb-6">
                         <div>
                             <h3 class="text-3xl font-bold text-[#111827]" id="prof-name">Loading...</h3>
                             <p class="text-[#D71A21] font-bold uppercase tracking-widest text-sm mt-1" id="prof-role">Loading...</p>
@@ -194,7 +190,7 @@
   <script>
     let supabase = null;
     
-    // SETUP SUPABASE HERE
+    // UPDATED SUPABASE CREDENTIALS
     const SUPABASE_URL = 'https://tihkhclpzpdhlcyalyhy.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpaGtoY2xwenBkaGxjeWFseWh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNjI3MTEsImV4cCI6MjA4ODczODcxMX0.C_-9TauzBfFBWqGJVzvhurCeJhHgOQrIH8yajgwor4k';
 
@@ -224,12 +220,10 @@
       err.classList.add('hidden');
       
       try {
-        // 1. Authenticate via Email/Password
         const { data: authData, error: authError } = await supabase.auth.signInWithPassword({ email, password });
         
         if (authError) throw authError;
 
-        // 2. Validate Employee ID against their Profile
         if (authData.user) {
             const { data: profile, error: profileError } = await supabase
                 .from('tng_profiles')
@@ -247,7 +241,6 @@
                 throw new Error("Employee ID does not match records.");
             }
 
-            // Success
             btn.innerHTML = `Authenticated`; 
             setTimeout(() => { loadDashboard(profile); }, 500);
         }
@@ -261,7 +254,6 @@
     async function checkSession() {
       const { data: { session } } = await supabase.auth.getSession();
       if (session && session.user) {
-          // Fetch profile data
           const { data: profile } = await supabase.from('tng_profiles').select('*, tng_departments(name), tng_roles(title)').eq('id', session.user.id).single();
           if(profile) loadDashboard(profile); else showLogin();
       } else {
@@ -285,7 +277,7 @@
       // Populate Sidebar & Welcome
       document.getElementById('sidebar-name').innerText = profile.full_name;
       document.getElementById('sidebar-role').innerText = profile.access_level;
-      document.getElementById('welcome-name').innerText = profile.full_name.split(' ')[0]; // First name
+      document.getElementById('welcome-name').innerText = profile.full_name.split(' ')[0];
 
       // Populate Profile View
       document.getElementById('prof-name').innerText = profile.full_name;
@@ -298,7 +290,7 @@
       document.getElementById('prof-tz').innerText = profile.timezone || 'Not Provided';
       if(profile.about_me) document.getElementById('prof-about').innerText = profile.about_me;
 
-      // Unhide HR/Admin controls if applicable
+      // Unhide HR/Admin controls
       if (profile.access_level === 'HR' || profile.access_level === 'Admin') {
           document.getElementById('admin-nav-section').classList.remove('hidden');
       }
