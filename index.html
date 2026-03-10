@@ -11,139 +11,172 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/dist/umd/supabase.min.js"></script>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Space Grotesk', 'sans-serif'] },
+          colors: { brand: { dark: '#0f172a', red: '#D71A21', light: '#f8fafc', border: '#e2e8f0' } },
+          boxShadow: { 'glass': '0 4px 30px rgba(0, 0, 0, 0.05)', 'soft': '0 2px 10px -3px rgba(6,81,237,0.1)' }
+        }
+      }
+    }
+  </script>
+
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
-    .fade-in { animation: fadeIn 0.4s ease-in forwards; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-    
-    /* Strict Corporate Scrollbar */
+    body { background-color: #f8fafc; }
+    .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 0px; }
-    ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    
+    /* Custom Input Focus Glow */
+    .input-glow:focus { box-shadow: 0 0 0 3px rgba(215, 26, 33, 0.15); border-color: #D71A21; }
   </style>
 </head>
-<body class="flex flex-col h-screen overflow-hidden text-gray-800">
+<body class="flex flex-col h-screen overflow-hidden text-slate-800 antialiased">
 
-  <div id="login-view" class="fixed inset-0 z-[100] bg-[#0f172a] flex items-center justify-center p-6 transition-opacity duration-500">
-    <div class="absolute inset-0 opacity-5" style="background-image: linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px); background-size: 40px 40px;"></div>
+  <div id="login-view" class="fixed inset-0 z-[100] bg-brand-dark flex items-center justify-center p-6 transition-opacity duration-500">
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
     
-    <div class="bg-white p-10 md:p-12 rounded-sm shadow-2xl w-full max-w-md relative overflow-hidden z-10 border border-gray-300">
-      <div class="absolute top-0 left-0 w-full h-1.5 bg-[#D71A21]"></div>
-      <div class="text-center mb-8 border-b border-gray-200 pb-6">
-        <h1 class="text-3xl font-serif font-bold text-[#0f172a] uppercase tracking-widest mb-1">T-Suite</h1>
-        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Tyler Nicholas Group Operations</p>
+    <div class="bg-white p-8 md:p-12 rounded-3xl shadow-2xl w-full max-w-md relative overflow-hidden z-10 border border-slate-100">
+      <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-brand-red to-red-500"></div>
+      
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-display font-bold text-brand-dark tracking-tight mb-1">T-Suite</h1>
+        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Tyler Nicholas Group</p>
       </div>
       
       <div class="space-y-5">
         <div>
-          <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Employee ID</label>
-          <input type="text" id="login-eid" placeholder="TNG-XXX" class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-sm font-mono font-bold focus:border-[#D71A21] focus:ring-1 focus:ring-[#D71A21] outline-none transition-all">
+          <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Employee ID</label>
+          <input type="text" id="login-eid" placeholder="TNG-XXX" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl font-mono font-bold outline-none transition-all input-glow">
         </div>
         <div>
-          <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Corporate Email</label>
-          <input type="email" id="login-email" class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-sm font-medium focus:border-[#D71A21] focus:ring-1 focus:ring-[#D71A21] outline-none transition-all">
+          <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Corporate Email</label>
+          <input type="email" id="login-email" placeholder="name@tylernicholasgroup.com" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl font-medium outline-none transition-all input-glow">
         </div>
         <div>
-          <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Passcode</label>
-          <input type="password" id="login-password" onkeypress="if(event.key === 'Enter') attemptLogin();" class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-sm focus:border-[#D71A21] focus:ring-1 focus:ring-[#D71A21] outline-none transition-all">
+          <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Passcode</label>
+          <input type="password" id="login-password" onkeypress="if(event.key === 'Enter') attemptLogin();" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none transition-all input-glow">
         </div>
         
-        <div id="login-error" class="hidden text-[#D71A21] text-xs font-bold text-center bg-red-50 p-3 border border-red-200 rounded-sm"></div>
+        <div id="login-error" class="hidden text-brand-red text-xs font-bold text-center bg-red-50 p-3 border border-red-100 rounded-lg"></div>
         
-        <button onclick="attemptLogin()" id="login-btn" class="w-full bg-[#0f172a] hover:bg-[#D71A21] text-white font-bold py-4 rounded-sm transition-colors uppercase tracking-widest flex justify-center items-center text-xs shadow-md mt-4">
-          Authenticate <i class="fa-solid fa-fingerprint ml-2"></i>
+        <button onclick="attemptLogin()" id="login-btn" class="w-full bg-brand-dark hover:bg-brand-red text-white font-bold py-4 rounded-xl transition-all uppercase tracking-widest flex justify-center items-center text-xs shadow-lg shadow-slate-900/20 mt-6">
+          Authenticate <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i>
         </button>
       </div>
     </div>
   </div>
 
-  <div id="dashboard-view" class="hidden w-full h-full flex bg-gray-100 fade-in">
+  <div id="dashboard-view" class="hidden w-full h-full flex bg-brand-light fade-in">
     
-    <aside class="w-64 bg-[#0f172a] text-gray-300 flex flex-col shadow-2xl z-20 flex-shrink-0 border-r border-gray-800">
-      <div class="p-6 border-b border-gray-800 bg-[#0b1120]">
-        <h2 class="text-2xl font-serif font-bold tracking-widest uppercase text-white">T-Suite</h2>
-        <p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mt-1">Tyler Nicholas Group</p>
+    <div id="mobile-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-brand-dark/50 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity"></div>
+
+    <aside id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-white border-r border-brand-border flex flex-col z-50 shadow-2xl lg:shadow-none">
+      
+      <div class="p-6 border-b border-brand-border flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-display font-bold text-brand-dark tracking-tight">T-Suite</h2>
+          <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Tyler Nicholas Group</p>
+        </div>
+        <button onclick="toggleSidebar()" class="lg:hidden text-slate-500 hover:text-brand-red"><i class="fa-solid fa-xmark text-xl"></i></button>
       </div>
       
-      <div class="p-5 border-b border-gray-800 bg-[#0f172a]">
-        <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Active Session</p>
-        <p class="text-sm font-bold text-white truncate" id="sidebar-name">Loading...</p>
-        <p class="text-[10px] text-[#D71A21] font-bold uppercase tracking-widest mt-1" id="sidebar-role">Staff</p>
+      <div class="p-6 border-b border-brand-border bg-slate-50/50">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-brand-dark flex items-center justify-center text-white shadow-sm"><i class="fa-solid fa-user text-sm"></i></div>
+          <div class="overflow-hidden">
+            <p class="text-sm font-bold text-brand-dark truncate" id="sidebar-name">Loading...</p>
+            <p class="text-[10px] text-brand-red font-bold uppercase tracking-widest mt-0.5" id="sidebar-role">Staff</p>
+          </div>
+        </div>
       </div>
       
-      <nav class="flex-grow py-4 space-y-0.5 overflow-y-auto">
-        <p class="text-[9px] text-gray-500 uppercase tracking-widest font-bold px-6 pt-2 pb-2">Employment Portal</p>
-        <button onclick="switchTab('home')" id="tab-home" class="nav-btn w-full text-left px-6 py-3 bg-[#D71A21] text-white text-xs font-bold transition-colors"><i class="fa-solid fa-house w-6 text-center"></i> Dashboard Hub</button>
-        <button onclick="switchTab('profile')" id="tab-profile" class="nav-btn w-full text-left px-6 py-3 hover:bg-gray-800 hover:text-white text-xs font-bold transition-colors"><i class="fa-solid fa-id-badge w-6 text-center"></i> Corporate Profile</button>
-        <button onclick="switchTab('leave')" id="tab-leave" class="nav-btn w-full text-left px-6 py-3 hover:bg-gray-800 hover:text-white text-xs font-bold transition-colors"><i class="fa-solid fa-calendar-day w-6 text-center"></i> Leave & Absences</button>
-        <button onclick="switchTab('ledger')" id="tab-ledger" class="nav-btn w-full text-left px-6 py-3 hover:bg-gray-800 hover:text-white text-xs font-bold transition-colors"><i class="fa-solid fa-clipboard-list w-6 text-center"></i> Personal Ledger</button>
-        <button onclick="switchTab('meetings')" id="tab-meetings" class="nav-btn w-full text-left px-6 py-3 hover:bg-gray-800 hover:text-white text-xs font-bold transition-colors"><i class="fa-solid fa-users-viewfinder w-6 text-center"></i> Calendar & Events</button>
+      <nav class="flex-grow p-4 space-y-1.5 overflow-y-auto">
+        <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold px-3 pt-2 pb-2">Employment</p>
+        <button onclick="switchTab('home')" id="tab-home" class="nav-btn w-full text-left px-4 py-2.5 bg-brand-dark text-white rounded-xl text-sm font-medium transition-all shadow-md"><i class="fa-solid fa-house w-6 text-center opacity-80"></i> Dashboard Hub</button>
+        <button onclick="switchTab('profile')" id="tab-profile" class="nav-btn w-full text-left px-4 py-2.5 text-slate-600 hover:bg-slate-100 hover:text-brand-dark rounded-xl text-sm font-medium transition-all"><i class="fa-solid fa-id-badge w-6 text-center opacity-70"></i> My Profile</button>
+        <button onclick="switchTab('leave')" id="tab-leave" class="nav-btn w-full text-left px-4 py-2.5 text-slate-600 hover:bg-slate-100 hover:text-brand-dark rounded-xl text-sm font-medium transition-all"><i class="fa-solid fa-calendar-day w-6 text-center opacity-70"></i> Leave Requests</button>
+        <button onclick="switchTab('ledger')" id="tab-ledger" class="nav-btn w-full text-left px-4 py-2.5 text-slate-600 hover:bg-slate-100 hover:text-brand-dark rounded-xl text-sm font-medium transition-all"><i class="fa-solid fa-clipboard-list w-6 text-center opacity-70"></i> HR Ledger</button>
+        <button onclick="switchTab('meetings')" id="tab-meetings" class="nav-btn w-full text-left px-4 py-2.5 text-slate-600 hover:bg-slate-100 hover:text-brand-dark rounded-xl text-sm font-medium transition-all"><i class="fa-solid fa-users-viewfinder w-6 text-center opacity-70"></i> Calendar</button>
 
         <div id="admin-nav-section" class="hidden">
-            <p class="text-[9px] text-[#D71A21] uppercase tracking-widest font-bold px-6 pt-6 pb-2 border-t border-gray-800 mt-2">Executive Operations</p>
-            <button onclick="switchTab('directory')" id="tab-directory" class="nav-btn w-full text-left px-6 py-3 hover:bg-gray-800 hover:text-white text-xs font-bold transition-colors"><i class="fa-solid fa-users-gear w-6 text-center"></i> Global Directory</button>
-            <button onclick="switchTab('leave-admin')" id="tab-leave-admin" class="nav-btn w-full text-left px-6 py-3 hover:bg-gray-800 hover:text-white text-xs font-bold transition-colors"><i class="fa-solid fa-file-shield w-6 text-center"></i> Leave Audit & Approval</button>
-            <button onclick="switchTab('infraction')" id="tab-infraction" class="nav-btn w-full text-left px-6 py-3 hover:bg-gray-800 hover:text-white text-xs font-bold transition-colors"><i class="fa-solid fa-gavel w-6 text-center"></i> Issue Action</button>
-            <button onclick="switchTab('global-logs')" id="tab-global-logs" class="nav-btn w-full text-left px-6 py-3 hover:bg-gray-800 hover:text-white text-xs font-bold transition-colors"><i class="fa-solid fa-server w-6 text-center"></i> Global Ledger & Logs</button>
-            <button onclick="switchTab('announcement-admin')" id="tab-announcement-admin" class="nav-btn w-full text-left px-6 py-3 hover:bg-gray-800 hover:text-white text-xs font-bold transition-colors"><i class="fa-solid fa-bullhorn w-6 text-center"></i> Broadcast Notice</button>
+            <p class="text-[10px] text-brand-red uppercase tracking-widest font-bold px-3 pt-6 pb-2 border-t border-slate-100 mt-2">Administration</p>
+            <button onclick="switchTab('directory')" id="tab-directory" class="nav-btn w-full text-left px-4 py-2.5 text-slate-600 hover:bg-red-50 hover:text-brand-red rounded-xl text-sm font-medium transition-all"><i class="fa-solid fa-users-gear w-6 text-center opacity-70"></i> Global Directory</button>
+            <button onclick="switchTab('leave-admin')" id="tab-leave-admin" class="nav-btn w-full text-left px-4 py-2.5 text-slate-600 hover:bg-red-50 hover:text-brand-red rounded-xl text-sm font-medium transition-all"><i class="fa-solid fa-file-shield w-6 text-center opacity-70"></i> Leave Approvals</button>
+            <button onclick="switchTab('infraction')" id="tab-infraction" class="nav-btn w-full text-left px-4 py-2.5 text-slate-600 hover:bg-red-50 hover:text-brand-red rounded-xl text-sm font-medium transition-all"><i class="fa-solid fa-gavel w-6 text-center opacity-70"></i> Issue Action</button>
+            <button onclick="switchTab('global-logs')" id="tab-global-logs" class="nav-btn w-full text-left px-4 py-2.5 text-slate-600 hover:bg-red-50 hover:text-brand-red rounded-xl text-sm font-medium transition-all"><i class="fa-solid fa-server w-6 text-center opacity-70"></i> Audit Logs</button>
+            <button onclick="switchTab('announcement-admin')" id="tab-announcement-admin" class="nav-btn w-full text-left px-4 py-2.5 text-slate-600 hover:bg-red-50 hover:text-brand-red rounded-xl text-sm font-medium transition-all"><i class="fa-solid fa-bullhorn w-6 text-center opacity-70"></i> Broadcast Notice</button>
         </div>
       </nav>
       
-      <div class="p-4 bg-[#0b1120] border-t border-gray-800">
-        <button onclick="logout()" class="w-full bg-[#0f172a] border border-gray-700 hover:bg-[#D71A21] hover:border-[#D71A21] hover:text-white text-gray-400 font-bold py-3 text-[10px] uppercase tracking-widest transition-colors">
-          Terminate Session <i class="fa-solid fa-power-off ml-2"></i>
+      <div class="p-4 border-t border-brand-border">
+        <button onclick="logout()" class="w-full bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-brand-dark font-bold py-3 rounded-xl text-xs uppercase tracking-widest transition-colors flex justify-center items-center">
+          Sign Out <i class="fa-solid fa-power-off ml-2"></i>
         </button>
       </div>
     </aside>
 
     <main class="flex-grow flex flex-col h-screen overflow-hidden relative">
       
-      <header class="bg-white shadow-sm py-4 px-8 flex justify-between items-center z-10 border-b border-gray-200">
-        <div>
-            <h2 class="text-lg font-bold text-[#0f172a] uppercase tracking-tight" id="section-title">Corporate Dashboard</h2>
-            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5" id="section-subtitle">Overview & Announcements</p>
-        </div>
+      <header class="bg-white/80 backdrop-blur-md border-b border-brand-border py-4 px-6 md:px-8 flex justify-between items-center z-10 sticky top-0">
         <div class="flex items-center gap-4">
-            <span class="text-[10px] font-mono font-bold text-gray-400 bg-gray-100 px-3 py-1.5 rounded-sm border border-gray-200 shadow-inner">
-                <i class="fa-solid fa-clock text-[#D71A21] mr-1"></i> <span id="live-clock">00:00:00</span>
+            <button onclick="toggleSidebar()" class="lg:hidden text-brand-dark text-xl"><i class="fa-solid fa-bars"></i></button>
+            <div>
+                <h2 class="text-lg md:text-xl font-display font-bold text-brand-dark tracking-tight leading-none" id="section-title">Dashboard Hub</h2>
+                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1 hidden md:block" id="section-subtitle">Overview & Announcements</p>
+            </div>
+        </div>
+        <div class="flex items-center">
+            <span class="text-xs font-mono font-bold text-slate-600 bg-slate-100 px-4 py-2 rounded-full border border-slate-200 shadow-inner flex items-center">
+                <i class="fa-solid fa-clock text-brand-red mr-2"></i> <span id="live-clock">00:00</span>
             </span>
         </div>
       </header>
 
-      <div class="flex-grow p-8 overflow-y-auto">
+      <div class="flex-grow p-4 md:p-8 overflow-y-auto">
         
         <div id="view-home" class="view-section block max-w-7xl mx-auto space-y-6">
-            <div class="bg-[#0f172a] p-8 text-white shadow-md relative overflow-hidden border-l-4 border-[#D71A21]">
-                <div class="absolute top-0 right-0 p-10 opacity-5"><i class="fa-solid fa-globe text-9xl"></i></div>
+            <div class="bg-brand-dark rounded-3xl p-8 md:p-10 text-white shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-8 opacity-[0.05] pointer-events-none"><i class="fa-solid fa-globe text-[150px]"></i></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent to-brand-red/10 pointer-events-none"></div>
                 <div class="relative z-10">
-                    <h3 class="text-2xl font-bold mb-1">Welcome, <span id="welcome-name" class="text-[#D71A21]">Staff</span></h3>
-                    <p class="text-gray-400 font-medium text-sm">Tyler Nicholas Group Central Operations</p>
+                    <p class="text-brand-red text-xs font-bold uppercase tracking-widest mb-2"><i class="fa-solid fa-bolt mr-1"></i> TNG Central Operations</p>
+                    <h3 class="text-3xl md:text-4xl font-display font-bold mb-2">Welcome back, <span id="welcome-name" class="text-white">Staff</span>.</h3>
+                    <p class="text-slate-400 text-sm max-w-lg">Access your employment details, track your leaves, and review the latest corporate communications from the dashboard.</p>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 bg-white border border-gray-200 shadow-sm flex flex-col">
-                    <div class="bg-gray-100 p-4 border-b border-gray-200">
-                        <h4 class="font-bold text-[#0f172a] uppercase tracking-widest text-xs"><i class="fa-solid fa-bullhorn text-[#D71A21] mr-2"></i> Corporate Announcements</h4>
+                <div class="lg:col-span-2 bg-white border border-brand-border rounded-3xl shadow-soft flex flex-col overflow-hidden">
+                    <div class="bg-slate-50 p-5 border-b border-brand-border">
+                        <h4 class="font-bold text-brand-dark uppercase tracking-widest text-xs flex items-center"><div class="w-2 h-2 bg-brand-red rounded-full mr-2"></div> Corporate Feed</h4>
                     </div>
-                    <div id="announcement-feed" class="p-6 space-y-4 flex-grow overflow-y-auto max-h-[500px]">
-                        <div class="text-center py-10 text-gray-400 font-bold text-xs uppercase tracking-widest"><i class="fa-solid fa-circle-notch fa-spin mb-2 text-xl"></i><br>Syncing Protocol...</div>
+                    <div id="announcement-feed" class="p-6 space-y-5 flex-grow overflow-y-auto max-h-[500px]">
+                        <div class="text-center py-10 text-slate-400 font-bold text-xs uppercase tracking-widest"><i class="fa-solid fa-circle-notch fa-spin mb-2 text-xl"></i><br>Syncing Protocol...</div>
                     </div>
                 </div>
 
-                <div class="bg-white border border-gray-200 shadow-sm flex flex-col">
-                    <div class="bg-gray-100 p-4 border-b border-gray-200">
-                        <h4 class="font-bold text-[#0f172a] uppercase tracking-widest text-xs"><i class="fa-solid fa-link text-[#D71A21] mr-2"></i> Network Links</h4>
+                <div class="bg-white border border-brand-border rounded-3xl shadow-soft flex flex-col overflow-hidden h-fit">
+                    <div class="bg-slate-50 p-5 border-b border-brand-border">
+                        <h4 class="font-bold text-brand-dark uppercase tracking-widest text-xs flex items-center"><i class="fa-solid fa-link text-brand-red mr-2"></i> Network Links</h4>
                     </div>
                     <div class="p-6 flex flex-col gap-3">
-                        <a href="https://discord.gg/9MDNdC9q8B" target="_blank" class="flex items-center p-3 bg-gray-50 border border-gray-200 hover:border-[#5865F2] hover:bg-white transition-colors group">
-                            <div class="w-8 h-8 bg-[#5865F2] text-white flex items-center justify-center mr-3 shadow-sm"><i class="fa-brands fa-discord"></i></div>
-                            <div><p class="font-bold text-[#0f172a] text-xs group-hover:text-[#5865F2]">HQ Discord Server</p><p class="text-[9px] text-gray-500 uppercase tracking-widest">Connect with staff</p></div>
+                        <a href="https://discord.gg/9MDNdC9q8B" target="_blank" class="flex items-center p-4 bg-white border border-slate-200 rounded-2xl hover:border-[#5865F2] hover:shadow-md transition-all group">
+                            <div class="w-10 h-10 bg-[#5865F2]/10 text-[#5865F2] rounded-xl flex items-center justify-center mr-4 group-hover:bg-[#5865F2] group-hover:text-white transition-colors"><i class="fa-brands fa-discord text-lg"></i></div>
+                            <div><p class="font-bold text-brand-dark text-sm">Discord Server</p><p class="text-[10px] text-slate-500 font-medium">Headquarters</p></div>
                         </a>
-                        <a href="https://chat.whatsapp.com/LEtPsHrprdyI8RdThw9SqM?mode=gi_t" target="_blank" class="flex items-center p-3 bg-gray-50 border border-gray-200 hover:border-[#25D366] hover:bg-white transition-colors group">
-                            <div class="w-8 h-8 bg-[#25D366] text-white flex items-center justify-center mr-3 shadow-sm"><i class="fa-brands fa-whatsapp"></i></div>
-                            <div><p class="font-bold text-[#0f172a] text-xs group-hover:text-[#25D366]">Corporate WhatsApp</p><p class="text-[9px] text-gray-500 uppercase tracking-widest">Emergency alerts</p></div>
+                        <a href="https://chat.whatsapp.com/LEtPsHrprdyI8RdThw9SqM?mode=gi_t" target="_blank" class="flex items-center p-4 bg-white border border-slate-200 rounded-2xl hover:border-[#25D366] hover:shadow-md transition-all group">
+                            <div class="w-10 h-10 bg-[#25D366]/10 text-[#25D366] rounded-xl flex items-center justify-center mr-4 group-hover:bg-[#25D366] group-hover:text-white transition-colors"><i class="fa-brands fa-whatsapp text-lg"></i></div>
+                            <div><p class="font-bold text-brand-dark text-sm">WhatsApp</p><p class="text-[10px] text-slate-500 font-medium">Emergency Comms</p></div>
                         </a>
                     </div>
                 </div>
@@ -151,175 +184,196 @@
         </div>
 
         <div id="view-profile" class="view-section hidden max-w-4xl mx-auto">
-            <div class="bg-white border border-gray-200 shadow-sm">
-                <div class="h-16 bg-[#0f172a] border-b-4 border-[#D71A21]"></div>
-                <div class="p-8">
-                    <div class="flex flex-col md:flex-row justify-between items-start border-b border-gray-200 pb-6 mb-6">
+            <div class="bg-white border border-brand-border rounded-3xl shadow-soft overflow-hidden">
+                <div class="h-24 bg-brand-dark relative">
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent to-brand-red/20"></div>
+                </div>
+                <div class="p-8 md:p-10 relative">
+                    <div class="flex flex-col md:flex-row justify-between items-start border-b border-slate-100 pb-8 mb-8 gap-4">
                         <div>
-                            <h3 class="text-3xl font-bold text-[#0f172a]" id="prof-name">Loading...</h3>
-                            <p class="text-[#D71A21] font-bold uppercase tracking-widest text-xs mt-1" id="prof-role">Loading...</p>
+                            <h3 class="text-3xl font-display font-bold text-brand-dark" id="prof-name">Loading...</h3>
+                            <span class="inline-block mt-2 bg-red-50 text-brand-red border border-red-100 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest" id="prof-role">Loading...</span>
                         </div>
-                        <div class="mt-4 md:mt-0 text-left md:text-right">
-                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1">Employee ID</p>
-                            <p class="font-mono bg-gray-100 px-4 py-2 text-[#0f172a] font-bold border border-gray-200 shadow-inner" id="prof-eid">---</p>
+                        <div class="md:text-right w-full md:w-auto bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Assigned Employee ID</p>
+                            <p class="font-mono text-brand-dark text-lg font-bold" id="prof-eid">---</p>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                        <div class="space-y-5">
-                            <div class="border-l-2 border-gray-300 pl-3"><p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">Department</p><p class="font-semibold text-[#0f172a] text-sm" id="prof-dept">---</p></div>
-                            <div class="border-l-2 border-gray-300 pl-3"><p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">Corporate Email</p><p class="font-semibold text-[#0f172a] text-sm" id="prof-email">---</p></div>
-                            <div class="border-l-2 border-gray-300 pl-3"><p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">Date of Birth</p><p class="font-semibold text-[#0f172a] text-sm" id="prof-dob">---</p></div>
+                        <div class="space-y-6">
+                            <div><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-sitemap mr-1"></i> Division / Department</p><p class="font-semibold text-brand-dark text-sm bg-slate-50 p-3 rounded-lg border border-slate-100" id="prof-dept">---</p></div>
+                            <div><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-envelope mr-1"></i> Corporate Email</p><p class="font-semibold text-brand-dark text-sm bg-slate-50 p-3 rounded-lg border border-slate-100" id="prof-email">---</p></div>
+                            <div><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-cake-candles mr-1"></i> Date of Birth</p><p class="font-semibold text-brand-dark text-sm bg-slate-50 p-3 rounded-lg border border-slate-100" id="prof-dob">---</p></div>
                         </div>
-                        <div class="space-y-5">
-                            <div class="border-l-2 border-gray-300 pl-3"><p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">Country of Residency</p><p class="font-semibold text-[#0f172a] text-sm" id="prof-country">---</p></div>
-                            <div class="border-l-2 border-gray-300 pl-3"><p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mb-0.5">Timezone</p><p class="font-semibold text-[#0f172a] text-sm" id="prof-tz">---</p></div>
+                        <div class="space-y-6">
+                            <div><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-earth-americas mr-1"></i> Residency</p><p class="font-semibold text-brand-dark text-sm bg-slate-50 p-3 rounded-lg border border-slate-100" id="prof-country">---</p></div>
+                            <div><p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-clock mr-1"></i> Timezone</p><p class="font-semibold text-brand-dark text-sm bg-slate-50 p-3 rounded-lg border border-slate-100" id="prof-tz">---</p></div>
                         </div>
                     </div>
-                    <div class="bg-gray-50 p-5 border border-gray-200">
-                        <p class="text-[10px] text-[#D71A21] font-bold uppercase tracking-widest mb-2">About Record</p>
-                        <p class="text-sm text-gray-700 leading-relaxed font-serif" id="prof-about">No biographic information provided.</p>
+                    <div>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-2"><i class="fa-solid fa-file-lines mr-1"></i> Biographic Record</p>
+                        <p class="text-sm text-slate-600 leading-relaxed bg-slate-50 p-5 rounded-xl border border-slate-100" id="prof-about">No biographic information provided.</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="view-leave" class="view-section hidden max-w-5xl mx-auto space-y-6">
-            <div class="bg-white border border-gray-200 shadow-sm p-6 md:p-8">
-                <h3 class="text-lg font-bold text-[#0f172a] uppercase tracking-wide mb-5 border-b border-gray-200 pb-3">Submit Absence Request</h3>
+            <div class="bg-white border border-brand-border rounded-3xl shadow-soft p-6 md:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mr-4"><i class="fa-solid fa-calendar-plus"></i></div>
+                    <h3 class="text-lg font-display font-bold text-brand-dark tracking-tight">Submit Absence Request</h3>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
-                    <div><label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Start Date</label><input type="date" id="leave-start" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 focus:border-[#D71A21] outline-none text-sm"></div>
-                    <div><label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">End Date</label><input type="date" id="leave-end" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 focus:border-[#D71A21] outline-none text-sm"></div>
+                    <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Start Date</label><input type="date" id="leave-start" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none input-glow text-sm font-medium"></div>
+                    <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">End Date</label><input type="date" id="leave-end" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none input-glow text-sm font-medium"></div>
                 </div>
-                <div class="mb-5">
-                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Reason for Absence</label>
-                    <textarea id="leave-reason" rows="3" class="w-full px-4 py-3 bg-gray-50 border border-gray-300 focus:border-[#D71A21] outline-none resize-none text-sm"></textarea>
+                <div class="mb-6">
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Reason for Absence</label>
+                    <textarea id="leave-reason" rows="3" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none input-glow resize-none text-sm"></textarea>
                 </div>
-                <button onclick="submitLeaveRequest()" id="btn-submit-leave" class="bg-[#0f172a] hover:bg-[#D71A21] text-white font-bold py-3 px-8 text-xs uppercase tracking-widest transition-colors shadow-sm">Submit Form</button>
+                <button onclick="submitLeaveRequest()" id="btn-submit-leave" class="bg-brand-dark hover:bg-brand-red text-white font-bold py-3.5 px-8 rounded-xl text-xs uppercase tracking-widest transition-all shadow-md">Submit to HR Form</button>
             </div>
 
-            <div class="bg-white border border-gray-200 shadow-sm overflow-hidden">
-                <div class="bg-gray-100 p-4 border-b border-gray-200"><h4 class="font-bold text-[#0f172a] uppercase tracking-widest text-xs">My Leave History</h4></div>
-                <table class="w-full text-left text-sm whitespace-nowrap">
-                    <thead class="bg-gray-50 border-b border-gray-200 text-gray-500 uppercase text-[10px] tracking-widest font-bold">
-                        <tr><th class="p-4">Submission Date</th><th class="p-4">Start Date</th><th class="p-4">End Date</th><th class="p-4">Authorization Status</th></tr>
-                    </thead>
-                    <tbody id="table-my-leaves" class="divide-y divide-gray-100 text-gray-800 font-medium"></tbody>
-                </table>
+            <div class="bg-white border border-brand-border rounded-3xl shadow-soft overflow-hidden">
+                <div class="bg-slate-50 p-5 border-b border-brand-border flex items-center"><i class="fa-solid fa-clock-rotate-left text-slate-400 mr-3"></i><h4 class="font-bold text-brand-dark uppercase tracking-widest text-xs">My Leave History</h4></div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="bg-white border-b border-slate-100 text-slate-400 uppercase text-[10px] tracking-widest font-bold">
+                            <tr><th class="p-5">Submission Date</th><th class="p-5">Start Date</th><th class="p-5">End Date</th><th class="p-5">Status</th></tr>
+                        </thead>
+                        <tbody id="table-my-leaves" class="divide-y divide-slate-50 text-slate-700 font-medium"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
         <div id="view-ledger" class="view-section hidden max-w-5xl mx-auto">
-            <div class="bg-white border border-gray-200 shadow-sm overflow-hidden">
-                <div class="bg-gray-100 p-4 border-b border-gray-200">
-                    <h4 class="font-bold text-[#0f172a] uppercase tracking-widest text-xs">My Corporate Ledger</h4>
+            <div class="bg-white border border-brand-border rounded-3xl shadow-soft overflow-hidden">
+                <div class="bg-brand-dark p-6 md:p-8 relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 opacity-10"><i class="fa-solid fa-scale-balanced text-[150px] text-white"></i></div>
+                    <h4 class="font-display font-bold text-white text-2xl tracking-tight relative z-10">My Corporate Ledger</h4>
+                    <p class="text-sm text-slate-400 mt-1 relative z-10">Official record of promotions, warnings, and disciplinary actions.</p>
                 </div>
-                <table class="w-full text-left text-sm whitespace-nowrap">
-                    <thead class="bg-gray-50 border-b border-gray-200 text-gray-500 uppercase text-[10px] tracking-widest font-bold">
-                        <tr><th class="p-4 w-1/6">Date Issued</th><th class="p-4 w-1/6">Action Type</th><th class="p-4 w-4/6">Official Description</th></tr>
-                    </thead>
-                    <tbody id="table-my-ledger" class="divide-y divide-gray-200 text-gray-800 font-medium"></tbody>
-                </table>
+                <div class="overflow-x-auto p-2">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="text-slate-400 uppercase text-[10px] tracking-widest font-bold border-b border-slate-100">
+                            <tr><th class="p-5 w-1/6">Date Issued</th><th class="p-5 w-1/6">Action Type</th><th class="p-5 w-4/6">Official Description</th></tr>
+                        </thead>
+                        <tbody id="table-my-ledger" class="divide-y divide-slate-50 text-slate-700 font-medium"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
         <div id="view-meetings" class="view-section hidden max-w-5xl mx-auto">
-            <div class="bg-white border border-gray-200 shadow-sm overflow-hidden">
-                <div class="bg-gray-100 p-4 border-b border-gray-200"><h4 class="font-bold text-[#0f172a] uppercase tracking-widest text-xs">Upcoming Mandatory Events</h4></div>
-                <div id="meeting-list" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            <div class="bg-white border border-brand-border rounded-3xl shadow-soft overflow-hidden">
+                <div class="bg-slate-50 p-5 border-b border-brand-border flex items-center"><i class="fa-solid fa-calendar-days text-slate-400 mr-3"></i><h4 class="font-bold text-brand-dark uppercase tracking-widest text-xs">Upcoming Mandatory Events</h4></div>
+                <div id="meeting-list" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5"></div>
             </div>
         </div>
 
         <div id="view-directory" class="view-section hidden max-w-6xl mx-auto">
-            <div class="bg-white border border-gray-200 shadow-sm overflow-hidden">
-                <div class="bg-gray-100 p-4 border-b border-gray-200">
-                    <h4 class="font-bold text-[#0f172a] uppercase tracking-widest text-xs">Global Staff Directory</h4>
+            <div class="bg-white border border-brand-border rounded-3xl shadow-soft overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex items-center bg-white">
+                    <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mr-4"><i class="fa-solid fa-users"></i></div>
+                    <h4 class="font-display font-bold text-brand-dark text-xl tracking-tight">Global Staff Directory</h4>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm whitespace-nowrap">
-                        <thead class="bg-[#0f172a] text-gray-300 uppercase text-[10px] tracking-widest font-bold border-b border-gray-800">
-                            <tr><th class="p-4">Emp ID</th><th class="p-4">Name & Title</th><th class="p-4">Email</th><th class="p-4">Clearance</th></tr>
+                        <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] tracking-widest font-bold border-b border-slate-200">
+                            <tr><th class="p-5">Emp ID</th><th class="p-5">Name & Title</th><th class="p-5">Email</th><th class="p-5">Clearance Level</th></tr>
                         </thead>
-                        <tbody id="table-directory" class="divide-y divide-gray-200 text-[#0f172a] font-medium bg-white"></tbody>
+                        <tbody id="table-directory" class="divide-y divide-slate-100 text-brand-dark font-medium bg-white"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
         <div id="view-leave-admin" class="view-section hidden max-w-6xl mx-auto">
-            <div class="bg-white border border-gray-200 shadow-sm overflow-hidden">
-                <div class="bg-[#0f172a] p-4 border-b border-gray-800">
-                    <h4 class="font-bold text-white uppercase tracking-widest text-xs">Leave Authorization Log</h4>
+            <div class="bg-white border border-brand-border rounded-3xl shadow-soft overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex items-center bg-white">
+                    <div class="w-10 h-10 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mr-4"><i class="fa-solid fa-file-signature"></i></div>
+                    <h4 class="font-display font-bold text-brand-dark text-xl tracking-tight">Leave Authorization Queue</h4>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm whitespace-nowrap">
-                        <thead class="bg-gray-100 text-gray-500 uppercase text-[10px] tracking-widest font-bold border-b border-gray-300">
-                            <tr><th class="p-4">Employee</th><th class="p-4">Dates</th><th class="p-4">Reason</th><th class="p-4">Status & Auditor</th><th class="p-4 text-right">Actions</th></tr>
+                        <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] tracking-widest font-bold border-b border-slate-200">
+                            <tr><th class="p-5">Employee</th><th class="p-5">Dates</th><th class="p-5">Reason</th><th class="p-5">Status & Auditor</th><th class="p-5 text-right">Actions</th></tr>
                         </thead>
-                        <tbody id="table-leave-admin" class="divide-y divide-gray-200 text-gray-800 font-medium"></tbody>
+                        <tbody id="table-leave-admin" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
         <div id="view-infraction" class="view-section hidden max-w-3xl mx-auto">
-            <div class="bg-white border border-gray-200 shadow-sm p-8 border-t-4 border-t-[#D71A21]">
-                <h3 class="text-xl font-bold text-[#0f172a] uppercase tracking-wide mb-2">Issue Corporate Action</h3>
-                <p class="text-xs text-gray-500 mb-6 border-b border-gray-200 pb-4 font-mono">WARNING: Entries are permanently logged to the employee's ledger.</p>
+            <div class="bg-white border border-brand-border rounded-3xl shadow-soft p-6 md:p-10 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1.5 bg-brand-red"></div>
+                <h3 class="text-2xl font-display font-bold text-brand-dark tracking-tight mb-2">Issue Corporate Action</h3>
+                <p class="text-xs text-slate-500 mb-8 border-b border-slate-100 pb-5 font-mono uppercase tracking-widest bg-red-50 text-brand-red inline-block px-3 py-1 rounded-md">WARNING: Entries are permanently logged.</p>
                 
-                <div class="space-y-5">
+                <div class="space-y-6">
                     <div>
-                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">Select Target Employee</label>
-                        <select id="inf-user" class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-sm outline-none focus:border-[#D71A21] font-bold text-sm"></select>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Target Employee</label>
+                        <select id="inf-user" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none input-glow font-semibold text-sm cursor-pointer"></select>
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">Action Type</label>
-                        <select id="inf-type" class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-sm outline-none focus:border-[#D71A21] font-bold text-sm">
-                            <option value="Promotion">Promotion</option>
-                            <option value="Demotion">Demotion</option>
-                            <option value="Warning">Formal Warning</option>
-                            <option value="Suspension">Suspension</option>
-                            <option value="Termination">Termination</option>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Action Type</label>
+                        <select id="inf-type" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none input-glow font-semibold text-sm cursor-pointer">
+                            <option value="Promotion">Promotion (Positive)</option>
+                            <option value="Demotion">Demotion (Negative)</option>
+                            <option value="Warning">Formal Warning (Negative)</option>
+                            <option value="Suspension">Suspension (Severe)</option>
+                            <option value="Termination">Termination (Critical)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">Official Narrative / Reason</label>
-                        <textarea id="inf-desc" rows="4" class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-sm outline-none focus:border-[#D71A21] resize-none text-sm"></textarea>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Official Narrative / Reason</label>
+                        <textarea id="inf-desc" rows="4" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none input-glow resize-none text-sm"></textarea>
                     </div>
-                    <button onclick="submitInfraction()" id="btn-submit-inf" class="w-full bg-[#0f172a] hover:bg-[#D71A21] text-white font-bold py-4 text-xs uppercase tracking-widest transition-colors shadow-sm mt-2">Execute Action to Ledger</button>
+                    <button onclick="submitInfraction()" id="btn-submit-inf" class="w-full bg-brand-dark hover:bg-brand-red text-white font-bold py-4 rounded-xl text-xs uppercase tracking-widest transition-all shadow-md mt-4">Execute Action to Ledger</button>
                 </div>
             </div>
         </div>
 
         <div id="view-global-logs" class="view-section hidden max-w-7xl mx-auto">
-            <div class="bg-white border border-gray-200 shadow-sm overflow-hidden">
-                <div class="bg-[#0f172a] p-4 border-b border-gray-800 flex justify-between items-center">
-                    <h4 class="font-bold text-white uppercase tracking-widest text-xs">Global Corporate Ledger</h4>
-                    <span class="text-[9px] text-[#D71A21] font-bold tracking-widest uppercase border border-[#D71A21] px-2 py-1">Authorized Access Only</span>
+            <div class="bg-white border border-brand-border rounded-3xl shadow-soft overflow-hidden">
+                <div class="bg-brand-dark p-5 flex justify-between items-center">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-server text-brand-red mr-3 text-xl"></i>
+                        <h4 class="font-display font-bold text-white text-lg tracking-tight">Global Corporate Ledger</h4>
+                    </div>
+                    <span class="text-[9px] text-brand-red font-bold tracking-widest uppercase border border-brand-red/30 bg-brand-red/10 px-3 py-1 rounded-full">Authorized Access Only</span>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm whitespace-nowrap">
-                        <thead class="bg-gray-100 text-gray-500 uppercase text-[10px] tracking-widest font-bold border-b border-gray-300">
-                            <tr><th class="p-4">Date</th><th class="p-4">Target Employee</th><th class="p-4">Action</th><th class="p-4">Description</th><th class="p-4">Authorized By</th><th class="p-4 text-right">Admin</th></tr>
+                        <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] tracking-widest font-bold border-b border-slate-200">
+                            <tr><th class="p-5">Date</th><th class="p-5">Target Employee</th><th class="p-5">Action</th><th class="p-5">Description</th><th class="p-5">Authorized By</th><th class="p-5 text-right">Admin</th></tr>
                         </thead>
-                        <tbody id="table-global-logs" class="divide-y divide-gray-200 text-[#0f172a] font-medium"></tbody>
+                        <tbody id="table-global-logs" class="divide-y divide-slate-100 text-brand-dark font-medium"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
         <div id="view-announcement-admin" class="view-section hidden max-w-3xl mx-auto">
-            <div class="bg-white border border-gray-200 shadow-sm p-8">
-                <h3 class="text-xl font-bold text-[#0f172a] uppercase tracking-wide mb-6 border-b border-gray-200 pb-4">Broadcast Network Notice</h3>
-                <div class="space-y-5">
+            <div class="bg-white border border-brand-border rounded-3xl shadow-soft p-6 md:p-10">
+                <div class="flex items-center mb-6 border-b border-slate-100 pb-5">
+                    <div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mr-4"><i class="fa-solid fa-satellite-dish"></i></div>
+                    <h3 class="text-2xl font-display font-bold text-brand-dark tracking-tight">Broadcast Network Notice</h3>
+                </div>
+                
+                <div class="space-y-6">
                     <div>
-                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">Headline</label>
-                        <input type="text" id="ann-title" class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-sm outline-none focus:border-[#D71A21] font-bold text-sm">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Headline</label>
+                        <input type="text" id="ann-title" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none input-glow font-bold text-sm">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">Message Body</label>
-                        <textarea id="ann-content" rows="6" class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-sm outline-none focus:border-[#D71A21] resize-none text-sm"></textarea>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Message Body</label>
+                        <textarea id="ann-content" rows="6" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl outline-none input-glow resize-none text-sm leading-relaxed"></textarea>
                     </div>
-                    <button onclick="submitAnnouncement()" id="btn-submit-ann" class="w-full bg-[#0f172a] hover:bg-[#D71A21] text-white font-bold py-4 text-xs uppercase tracking-widest transition-colors shadow-sm mt-2">Publish to Network</button>
+                    <button onclick="submitAnnouncement()" id="btn-submit-ann" class="w-full bg-brand-dark hover:bg-brand-red text-white font-bold py-4 rounded-xl text-xs uppercase tracking-widest transition-all shadow-md mt-4">Publish to Network</button>
                 </div>
             </div>
         </div>
@@ -329,18 +383,27 @@
   </div>
 
   <script>
-    // Live Clock functionality
+    // --- UI LOGIC ---
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('mobile-overlay');
+        sidebar.classList.toggle('-translate-x-full');
+        overlay.classList.toggle('hidden');
+    }
+
+    // Live Clock
     setInterval(() => {
         const now = new Date();
-        document.getElementById('live-clock').innerText = now.toLocaleTimeString('en-US', { hour12: false });
+        document.getElementById('live-clock').innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
     }, 1000);
 
+    // --- SUPABASE CONFIG ---
     let supabase = null;
     const SUPABASE_URL = 'https://tihkhclpzpdhlcyalyhy.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpaGtoY2xwenBkaGxjeWFseWh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNjI3MTEsImV4cCI6MjA4ODczODcxMX0.C_-9TauzBfFBWqGJVzvhurCeJhHgOQrIH8yajgwor4k';
 
     let currentUserProfile = null;
-    let profilesMap = {}; // Cache for quick name lookups by ID
+    let profilesMap = {}; 
 
     document.addEventListener("DOMContentLoaded", () => {
       const checkSupabase = setInterval(() => {
@@ -352,7 +415,7 @@
       }, 100);
     });
 
-    // --- AUTHENTICATION LOGIC ---
+    // --- AUTHENTICATION ---
     async function attemptLogin() {
       const eid = document.getElementById('login-eid').value.trim();
       const email = document.getElementById('login-email').value.trim();
@@ -360,9 +423,9 @@
       const btn = document.getElementById('login-btn');
       const err = document.getElementById('login-error');
       
-      if (!eid || !email || !password) { err.innerText = "All fields are required."; err.classList.remove('hidden'); return; }
+      if (!eid || !email || !password) { err.innerText = "All credentials required."; err.classList.remove('hidden'); return; }
 
-      btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Processing`;
+      btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Validating`;
       err.classList.add('hidden');
       
       try {
@@ -371,16 +434,16 @@
 
         if (authData.user) {
             const { data: profile, error: profileError } = await supabase.from('tng_profiles').select('*, tng_departments(name), tng_roles(title)').eq('id', authData.user.id).single();
-            if (profileError || !profile) { await supabase.auth.signOut(); throw new Error("No corporate profile found."); }
-            if (profile.employee_id !== eid) { await supabase.auth.signOut(); throw new Error("Employee ID does not match records."); }
+            if (profileError || !profile) { await supabase.auth.signOut(); throw new Error("Corporate profile not linked."); }
+            if (profile.employee_id !== eid) { await supabase.auth.signOut(); throw new Error("Employee ID mismatch."); }
 
-            btn.innerHTML = `Access Granted`; 
-            setTimeout(() => { loadDashboard(profile); }, 500);
+            btn.innerHTML = `Access Granted <i class="fa-solid fa-check ml-2"></i>`; 
+            setTimeout(() => { loadDashboard(profile); }, 600);
         }
       } catch (exception) { 
           err.innerText = exception.message || "Authentication failed."; 
           err.classList.remove('hidden'); 
-          btn.innerHTML = `Authenticate <i class="fa-solid fa-fingerprint ml-2"></i>`; 
+          btn.innerHTML = `Authenticate <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i>`; 
       }
     }
 
@@ -404,7 +467,7 @@
         if(data) data.forEach(p => profilesMap[p.id] = p.full_name);
     }
 
-    // --- DASHBOARD ROUTING & RENDERING ---
+    // --- DASHBOARD ROUTING ---
     async function loadDashboard(profile) {
       currentUserProfile = profile;
       document.getElementById('login-view').classList.add('hidden');
@@ -426,7 +489,7 @@
 
       if (profile.access_level === 'HR' || profile.access_level === 'Admin') {
           document.getElementById('admin-nav-section').classList.remove('hidden');
-          await preloadProfilesMap(); // Important for logs
+          await preloadProfilesMap(); 
       }
 
       fetchAnnouncements();
@@ -437,14 +500,22 @@
 
     function switchTab(tab) {
       document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.nav-btn').forEach(el => el.className = "nav-btn w-full text-left px-6 py-3 hover:bg-gray-800 hover:text-white text-xs font-bold transition-colors");
+      document.querySelectorAll('.nav-btn').forEach(el => el.className = "nav-btn w-full text-left px-4 py-2.5 text-slate-600 hover:bg-slate-100 hover:text-brand-dark rounded-xl text-sm font-medium transition-all");
       
       document.getElementById(`view-${tab}`).classList.remove('hidden');
-      document.getElementById(`tab-${tab}`).className = "nav-btn w-full text-left px-6 py-3 bg-[#D71A21] text-white text-xs font-bold transition-colors";
+      
+      const activeBtn = document.getElementById(`tab-${tab}`);
+      if(activeBtn) {
+          if(activeBtn.parentElement.id === 'admin-nav-section') {
+              activeBtn.className = "nav-btn w-full text-left px-4 py-2.5 bg-red-50 text-brand-red rounded-xl text-sm font-bold transition-all shadow-sm";
+          } else {
+              activeBtn.className = "nav-btn w-full text-left px-4 py-2.5 bg-brand-dark text-white rounded-xl text-sm font-medium transition-all shadow-md";
+          }
+      }
       
       const titles = { 
           'home': {t: 'Dashboard Hub', s: 'Overview & Announcements'}, 
-          'profile': {t: 'Corporate Profile', s: 'Personal Data'}, 
+          'profile': {t: 'Corporate Profile', s: 'Personal Data Record'}, 
           'leave': {t: 'Leave Management', s: 'Request & Tracking'}, 
           'ledger': {t: 'Official Ledger', s: 'Personal Action History'}, 
           'meetings': {t: 'Corporate Calendar', s: 'Scheduled Events'},
@@ -456,6 +527,12 @@
       };
       document.getElementById('section-title').innerText = titles[tab]?.t || 'TNG Portal';
       document.getElementById('section-subtitle').innerText = titles[tab]?.s || '';
+
+      // Close mobile sidebar if open
+      if(window.innerWidth < 1024) {
+          document.getElementById('sidebar').classList.add('-translate-x-full');
+          document.getElementById('mobile-overlay').classList.add('hidden');
+      }
 
       if(tab === 'directory') fetchDirectory();
       if(tab === 'leave-admin') fetchAllLeaves();
@@ -469,23 +546,23 @@
         const feed = document.getElementById('announcement-feed');
         const isAdmin = (currentUserProfile.access_level === 'HR' || currentUserProfile.access_level === 'Admin');
 
-        if (!data || data.length === 0) return feed.innerHTML = `<div class="text-center py-10 text-gray-400 font-medium text-xs font-mono uppercase">No active broadcasts.</div>`;
+        if (!data || data.length === 0) return feed.innerHTML = `<div class="text-center py-10 text-slate-400 font-medium text-xs font-mono uppercase">No active broadcasts.</div>`;
         let html = '';
         data.forEach(a => {
-            const delBtn = isAdmin ? `<button onclick="deleteAnnouncement('${a.id}')" class="text-gray-300 hover:text-[#D71A21] transition-colors ml-4" title="Delete Notice"><i class="fa-solid fa-trash"></i></button>` : '';
+            const delBtn = isAdmin ? `<button onclick="deleteAnnouncement('${a.id}')" class="text-slate-300 hover:text-brand-red transition-colors ml-4 bg-white rounded-md w-6 h-6 border border-slate-200 shadow-sm" title="Delete Notice"><i class="fa-solid fa-trash text-[10px]"></i></button>` : '';
             html += `
-            <div class="p-5 border border-gray-200 bg-gray-50 rounded-sm">
-                <div class="flex justify-between items-start mb-3 border-b border-gray-200 pb-3">
+            <div class="p-6 border border-slate-200 bg-white rounded-2xl shadow-sm">
+                <div class="flex justify-between items-start mb-4 border-b border-slate-100 pb-4">
                     <div>
-                        <h5 class="font-bold text-[#0f172a] text-base leading-tight">${a.title}</h5>
-                        <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest mt-1">Authorized by: ${a.tng_profiles?.full_name || 'Admin'}</p>
+                        <h5 class="font-bold text-brand-dark text-base leading-tight">${a.title}</h5>
+                        <p class="text-[9px] font-bold text-brand-red uppercase tracking-widest mt-1">Authorized by: ${a.tng_profiles?.full_name || 'Admin'}</p>
                     </div>
                     <div class="flex items-center">
-                        <span class="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono">${new Date(a.created_at).toLocaleDateString()}</span>
+                        <span class="text-[9px] font-bold text-slate-500 uppercase tracking-widest font-mono bg-slate-100 px-2 py-1 rounded-md border border-slate-200">${new Date(a.created_at).toLocaleDateString()}</span>
                         ${delBtn}
                     </div>
                 </div>
-                <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">${a.content}</p>
+                <p class="text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">${a.content}</p>
             </div>`;
         }); feed.innerHTML = html;
     }
@@ -493,64 +570,64 @@
     async function fetchMyLeaves() {
         const { data } = await supabase.from('tng_leaves').select('*').eq('user_id', currentUserProfile.id).order('created_at', { ascending: false });
         const tbody = document.getElementById('table-my-leaves');
-        if (!data || data.length === 0) return tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-gray-400 text-xs font-mono uppercase">No records found.</td></tr>`;
+        if (!data || data.length === 0) return tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400 text-xs font-mono uppercase">No records found.</td></tr>`;
         let html = '';
         data.forEach(l => {
-            let badge = `<span class="px-2 py-1 bg-yellow-100 text-yellow-700 border border-yellow-200 text-[9px] font-bold uppercase tracking-widest">${l.status}</span>`;
-            if(l.status === 'Approved') badge = `<span class="px-2 py-1 bg-green-100 text-green-700 border border-green-200 text-[9px] font-bold uppercase tracking-widest">Approved</span>`;
-            if(l.status === 'Denied') badge = `<span class="px-2 py-1 bg-red-100 text-[#D71A21] border border-red-200 text-[9px] font-bold uppercase tracking-widest">Denied</span>`;
-            html += `<tr class="hover:bg-gray-50"><td class="p-4 font-mono text-xs">${new Date(l.created_at).toLocaleDateString()}</td><td class="p-4 font-bold text-[#0f172a]">${l.start_date}</td><td class="p-4 font-bold text-[#0f172a]">${l.end_date}</td><td class="p-4">${badge}</td></tr>`;
+            let badge = `<span class="px-2.5 py-1 bg-amber-50 text-amber-600 border border-amber-200 rounded-full text-[9px] font-bold uppercase tracking-widest">Pending</span>`;
+            if(l.status === 'Approved') badge = `<span class="px-2.5 py-1 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-full text-[9px] font-bold uppercase tracking-widest">Approved</span>`;
+            if(l.status === 'Denied') badge = `<span class="px-2.5 py-1 bg-rose-50 text-rose-600 border border-rose-200 rounded-full text-[9px] font-bold uppercase tracking-widest">Denied</span>`;
+            html += `<tr class="hover:bg-slate-50 transition-colors"><td class="p-5 font-mono text-xs text-slate-500">${new Date(l.created_at).toLocaleDateString()}</td><td class="p-5 font-bold text-brand-dark">${l.start_date}</td><td class="p-5 font-bold text-brand-dark">${l.end_date}</td><td class="p-5">${badge}</td></tr>`;
         }); tbody.innerHTML = html;
     }
 
     async function fetchMyLedger() {
         const { data } = await supabase.from('tng_ledger').select('*').eq('user_id', currentUserProfile.id).order('date_issued', { ascending: false });
         const tbody = document.getElementById('table-my-ledger');
-        if (!data || data.length === 0) return tbody.innerHTML = `<tr><td colspan="3" class="p-6 text-center text-gray-400 text-xs font-mono uppercase">Ledger Clear.</td></tr>`;
+        if (!data || data.length === 0) return tbody.innerHTML = `<tr><td colspan="3" class="p-6 text-center text-slate-400 text-xs font-mono uppercase">Ledger Clear.</td></tr>`;
         let html = '';
         data.forEach(l => {
-            let color = "text-gray-600";
-            if (l.action_type === 'Promotion') color = "text-green-600";
-            if (l.action_type === 'Warning' || l.action_type === 'Demotion') color = "text-yellow-600";
-            if (l.action_type === 'Suspension' || l.action_type === 'Termination') color = "text-[#D71A21]";
-            html += `<tr class="hover:bg-gray-50"><td class="p-4 font-mono text-xs">${new Date(l.date_issued).toLocaleDateString()}</td><td class="p-4 font-bold uppercase tracking-widest text-[10px] ${color}">${l.action_type}</td><td class="p-4 text-gray-700 truncate max-w-sm" title="${l.description}">${l.description}</td></tr>`;
+            let color = "text-slate-600 bg-slate-100 border-slate-200";
+            if (l.action_type === 'Promotion') color = "text-emerald-700 bg-emerald-50 border-emerald-200";
+            if (l.action_type === 'Warning' || l.action_type === 'Demotion') color = "text-amber-700 bg-amber-50 border-amber-200";
+            if (l.action_type === 'Suspension' || l.action_type === 'Termination') color = "text-rose-700 bg-rose-50 border-rose-200";
+            html += `<tr class="hover:bg-slate-50 transition-colors"><td class="p-5 font-mono text-xs text-slate-500">${new Date(l.date_issued).toLocaleDateString()}</td><td class="p-5"><span class="px-2.5 py-1 rounded-md border text-[9px] font-bold uppercase tracking-widest ${color}">${l.action_type}</span></td><td class="p-5 text-sm text-slate-700 truncate max-w-sm" title="${l.description}">${l.description}</td></tr>`;
         }); tbody.innerHTML = html;
     }
 
     async function fetchMeetings() {
         const { data } = await supabase.from('tng_meetings').select('*').order('scheduled_for', { ascending: true });
         const list = document.getElementById('meeting-list');
-        if (!data || data.length === 0) return list.innerHTML = `<div class="col-span-full text-center py-6 text-gray-400 text-xs font-mono uppercase">No schedule available.</div>`;
+        if (!data || data.length === 0) return list.innerHTML = `<div class="col-span-full text-center py-6 text-slate-400 text-xs font-mono uppercase">No schedule available.</div>`;
         let html = '';
         data.forEach(m => {
             const d = new Date(m.scheduled_for);
-            html += `<div class="p-4 border border-gray-200 bg-gray-50 rounded-sm flex items-start gap-4"><div class="bg-[#0f172a] text-white p-2 rounded-sm text-center min-w-[50px]"><p class="text-[10px] uppercase tracking-widest font-bold text-[#D71A21]">${d.toLocaleString('en-US',{month:'short'})}</p><p class="text-lg font-bold">${d.getDate()}</p></div><div><h5 class="font-bold text-[#0f172a] text-sm">${m.title}</h5><p class="text-[10px] text-gray-500 font-mono font-bold mb-1">${d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p><p class="text-xs text-gray-600 line-clamp-2">${m.description}</p></div></div>`;
+            html += `<div class="p-5 border border-slate-200 bg-white rounded-2xl shadow-sm flex items-start gap-4 hover:border-brand-dark transition-colors"><div class="bg-brand-dark text-white p-3 rounded-xl text-center min-w-[60px] shadow-md"><p class="text-[9px] uppercase tracking-widest font-bold text-brand-red mb-0.5">${d.toLocaleString('en-US',{month:'short'})}</p><p class="text-xl font-display font-bold leading-none">${d.getDate()}</p></div><div><h5 class="font-bold text-brand-dark text-sm mb-0.5">${m.title}</h5><p class="text-[10px] text-brand-red font-mono font-bold mb-2 flex items-center"><i class="fa-regular fa-clock mr-1"></i> ${d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p><p class="text-xs text-slate-500 line-clamp-2 leading-relaxed">${m.description}</p></div></div>`;
         }); list.innerHTML = html;
     }
 
-    // --- DATA FETCHERS (ADMIN & HR) ---
+    // --- DATA FETCHERS (ADMIN) ---
     async function fetchDirectory() {
         const { data } = await supabase.from('tng_profiles').select('*, tng_departments(name), tng_roles(title)').order('employee_id', { ascending: true });
         const tbody = document.getElementById('table-directory');
         let html = '';
         data.forEach(p => {
-            html += `<tr class="hover:bg-gray-50 border-b border-gray-100"><td class="p-4 font-mono font-bold text-xs text-gray-500">${p.employee_id}</td><td class="p-4 font-bold text-[#0f172a]">${p.full_name}<br><span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">${p.tng_roles?.title || 'Staff'}</span></td><td class="p-4 text-gray-600 text-sm font-medium">${p.email}</td><td class="p-4"><span class="bg-gray-200 text-gray-700 px-2 py-1 border border-gray-300 text-[9px] font-bold uppercase tracking-widest">${p.access_level}</span></td></tr>`;
+            html += `<tr class="hover:bg-slate-50 border-b border-slate-100 transition-colors"><td class="p-5 font-mono font-bold text-xs text-slate-500">${p.employee_id}</td><td class="p-5 font-bold text-brand-dark">${p.full_name}<br><span class="text-[9px] font-bold text-brand-red uppercase tracking-widest">${p.tng_roles?.title || 'Staff'}</span></td><td class="p-5 text-slate-600 text-sm font-medium">${p.email}</td><td class="p-5"><span class="bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md border border-slate-200 text-[9px] font-bold uppercase tracking-widest">${p.access_level}</span></td></tr>`;
         }); tbody.innerHTML = html;
     }
 
     async function fetchAllLeaves() {
         const { data } = await supabase.from('tng_leaves').select('*, tng_profiles(full_name)').order('created_at', { ascending: false });
         const tbody = document.getElementById('table-leave-admin');
-        if (!data || data.length === 0) return tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-gray-400 text-xs font-mono uppercase">Log empty.</td></tr>`;
+        if (!data || data.length === 0) return tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400 text-xs font-mono uppercase">Log empty.</td></tr>`;
         let html = '';
         data.forEach(l => {
-            let statusBlock = `<span class="text-yellow-600 font-bold uppercase tracking-widest text-[9px]"><i class="fa-solid fa-clock mr-1"></i> Pending</span>`;
-            if(l.status === 'Approved') statusBlock = `<span class="text-green-600 font-bold uppercase tracking-widest text-[9px]"><i class="fa-solid fa-check mr-1"></i> Approved by ${profilesMap[l.reviewed_by] || 'Admin'}</span>`;
-            if(l.status === 'Denied') statusBlock = `<span class="text-[#D71A21] font-bold uppercase tracking-widest text-[9px]"><i class="fa-solid fa-xmark mr-1"></i> Denied by ${profilesMap[l.reviewed_by] || 'Admin'}</span>`;
+            let statusBlock = `<span class="text-amber-600 font-bold uppercase tracking-widest text-[9px] bg-amber-50 px-2 py-1 rounded-md border border-amber-200"><i class="fa-solid fa-clock mr-1"></i> Pending</span>`;
+            if(l.status === 'Approved') statusBlock = `<span class="text-emerald-600 font-bold uppercase tracking-widest text-[9px] bg-emerald-50 px-2 py-1 rounded-md border border-emerald-200"><i class="fa-solid fa-check mr-1"></i> Apprv by ${profilesMap[l.reviewed_by] || 'Admin'}</span>`;
+            if(l.status === 'Denied') statusBlock = `<span class="text-rose-600 font-bold uppercase tracking-widest text-[9px] bg-rose-50 px-2 py-1 rounded-md border border-rose-200"><i class="fa-solid fa-xmark mr-1"></i> Deny by ${profilesMap[l.reviewed_by] || 'Admin'}</span>`;
             
-            let actionBtns = l.status === 'Pending' ? `<button onclick="updateLeave('${l.id}', 'Approved')" class="text-green-600 hover:text-green-800 mr-3" title="Approve"><i class="fa-solid fa-check-circle text-lg"></i></button><button onclick="updateLeave('${l.id}', 'Denied')" class="text-[#D71A21] hover:text-red-800" title="Deny"><i class="fa-solid fa-times-circle text-lg"></i></button>` : `<span class="text-gray-400 text-[10px] font-bold uppercase tracking-widest">Concluded</span>`;
+            let actionBtns = l.status === 'Pending' ? `<button onclick="updateLeave('${l.id}', 'Approved')" class="bg-emerald-500 hover:bg-emerald-600 text-white w-7 h-7 rounded-md mr-2 shadow-sm transition-colors" title="Approve"><i class="fa-solid fa-check text-xs"></i></button><button onclick="updateLeave('${l.id}', 'Denied')" class="bg-rose-500 hover:bg-rose-600 text-white w-7 h-7 rounded-md shadow-sm transition-colors" title="Deny"><i class="fa-solid fa-xmark text-xs"></i></button>` : `<span class="text-slate-300 text-[10px] font-bold uppercase tracking-widest">Concluded</span>`;
             
-            html += `<tr class="hover:bg-gray-50 border-b border-gray-100"><td class="p-4 font-bold text-[#0f172a] text-sm">${l.tng_profiles?.full_name}</td><td class="p-4 font-mono font-bold text-xs text-gray-500">${l.start_date}<br><span class="text-[9px]">to</span> ${l.end_date}</td><td class="p-4 text-xs text-gray-600 truncate max-w-[200px]" title="${l.reason}">${l.reason}</td><td class="p-4">${statusBlock}</td><td class="p-4 text-right">${actionBtns}</td></tr>`;
+            html += `<tr class="hover:bg-slate-50 border-b border-slate-100 transition-colors"><td class="p-5 font-bold text-brand-dark text-sm">${l.tng_profiles?.full_name}</td><td class="p-5 font-mono font-bold text-xs text-slate-500">${l.start_date}<br><span class="text-[9px] font-sans">to</span> ${l.end_date}</td><td class="p-5 text-xs text-slate-600 truncate max-w-[200px]" title="${l.reason}">${l.reason}</td><td class="p-5">${statusBlock}</td><td class="p-5 text-right">${actionBtns}</td></tr>`;
         }); tbody.innerHTML = html;
     }
 
@@ -563,39 +640,56 @@
     async function fetchGlobalLogs() {
         const { data } = await supabase.from('tng_ledger').select('*').order('date_issued', { ascending: false });
         const tbody = document.getElementById('table-global-logs');
-        if (!data || data.length === 0) return tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-400 text-xs font-mono uppercase">Ledger is clean.</td></tr>`;
+        if (!data || data.length === 0) return tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400 text-xs font-mono uppercase">Ledger is clean.</td></tr>`;
         let html = '';
         data.forEach(l => {
             const targetName = profilesMap[l.user_id] || l.user_id;
             const issuerName = profilesMap[l.issued_by] || 'System Admin';
             
-            let color = "text-gray-600 bg-gray-100";
-            if (l.action_type === 'Promotion') color = "text-green-700 bg-green-50";
-            if (l.action_type === 'Warning' || l.action_type === 'Demotion') color = "text-yellow-700 bg-yellow-50";
-            if (l.action_type === 'Suspension' || l.action_type === 'Termination') color = "text-[#D71A21] bg-red-50";
+            let color = "text-slate-600 bg-slate-50 border-slate-200";
+            if (l.action_type === 'Promotion') color = "text-emerald-700 bg-emerald-50 border-emerald-200";
+            if (l.action_type === 'Warning' || l.action_type === 'Demotion') color = "text-amber-700 bg-amber-50 border-amber-200";
+            if (l.action_type === 'Suspension' || l.action_type === 'Termination') color = "text-rose-700 bg-rose-50 border-rose-200";
 
-            html += `<tr class="hover:bg-gray-50 border-b border-gray-100"><td class="p-4 font-mono text-xs text-gray-500">${new Date(l.date_issued).toLocaleString()}</td><td class="p-4 font-bold text-[#0f172a] text-sm">${targetName}</td><td class="p-4"><span class="px-2 py-1 border border-gray-200 text-[9px] font-bold uppercase tracking-widest ${color}">${l.action_type}</span></td><td class="p-4 text-xs text-gray-700 truncate max-w-xs" title="${l.description}">${l.description}</td><td class="p-4 text-xs font-bold text-gray-500">${issuerName}</td><td class="p-4 text-right"><button onclick="deleteLedger('${l.id}')" class="text-gray-400 hover:text-[#D71A21] transition-colors" title="Delete Record"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+            html += `<tr class="hover:bg-slate-50 border-b border-slate-100 transition-colors"><td class="p-5 font-mono text-xs text-slate-500">${new Date(l.date_issued).toLocaleString()}</td><td class="p-5 font-bold text-brand-dark text-sm">${targetName}</td><td class="p-5"><span class="px-2.5 py-1 rounded-md border text-[9px] font-bold uppercase tracking-widest ${color}">${l.action_type}</span></td><td class="p-5 text-xs text-slate-700 truncate max-w-xs" title="${l.description}">${l.description}</td><td class="p-5 text-xs font-bold text-brand-red">${issuerName}</td><td class="p-5 text-right"><button onclick="deleteLedger('${l.id}')" class="text-slate-300 hover:text-brand-red transition-colors bg-white border border-slate-200 w-7 h-7 rounded-md shadow-sm" title="Delete Record"><i class="fa-solid fa-trash text-[10px]"></i></button></td></tr>`;
         }); tbody.innerHTML = html;
     }
 
-    // --- FORM ACTIONS & DELETIONS ---
+    // --- FORM ACTIONS WITH ROBUST ERROR HANDLING ---
     async function submitLeaveRequest() {
         const start = document.getElementById('leave-start').value;
         const end = document.getElementById('leave-end').value;
         const reason = document.getElementById('leave-reason').value;
         const btn = document.getElementById('btn-submit-leave');
         if(!start || !end || !reason) return alert("System requires all fields to be populated.");
-        btn.innerText = "Processing...";
-        await supabase.from('tng_leaves').insert({ user_id: currentUserProfile.id, start_date: start, end_date: end, reason: reason });
-        document.getElementById('leave-start').value = ''; document.getElementById('leave-end').value = ''; document.getElementById('leave-reason').value = '';
-        btn.innerText = "Submit Form";
-        fetchMyLeaves();
+        
+        btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Processing...`;
+        
+        try {
+            const { error } = await supabase.from('tng_leaves').insert({ user_id: currentUserProfile.id, start_date: start, end_date: end, reason: reason });
+            if (error) throw error;
+            
+            document.getElementById('leave-start').value = ''; document.getElementById('leave-end').value = ''; document.getElementById('leave-reason').value = '';
+            alert("Leave request submitted to Administration.");
+            fetchMyLeaves();
+        } catch (err) {
+            console.error(err);
+            alert("Database Error: Failed to submit leave request.");
+        } finally {
+            btn.innerText = "Submit to HR Form";
+        }
     }
 
     async function updateLeave(id, status) {
-        if(confirm(`Are you sure you want to mark this request as ${status}?`)) {
-            await supabase.from('tng_leaves').update({ status: status, reviewed_by: currentUserProfile.id }).eq('id', id);
-            fetchAllLeaves();
+        if(confirm(`Are you sure you want to officially mark this request as ${status}?`)) {
+            try {
+                const { error } = await supabase.from('tng_leaves').update({ status: status, reviewed_by: currentUserProfile.id }).eq('id', id);
+                if (error) throw error;
+                fetchAllLeaves();
+            } catch (err) {
+                console.error(err);
+                alert("Database Error: Failed to update leave status.");
+            }
         }
     }
 
@@ -605,11 +699,21 @@
         const desc = document.getElementById('inf-desc').value;
         const btn = document.getElementById('btn-submit-inf');
         if(!desc) return alert("System requires an official narrative.");
-        btn.innerText = "Executing...";
-        await supabase.from('tng_ledger').insert({ user_id: userId, action_type: type, description: desc, issued_by: currentUserProfile.id });
-        document.getElementById('inf-desc').value = '';
-        btn.innerText = "Execute Action to Ledger";
-        alert("Corporate Action logged to employee ledger successfully.");
+        
+        btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Executing...`;
+        
+        try {
+            const { error } = await supabase.from('tng_ledger').insert({ user_id: userId, action_type: type, description: desc, issued_by: currentUserProfile.id });
+            if (error) throw error;
+            
+            document.getElementById('inf-desc').value = '';
+            alert("Corporate Action logged to employee ledger successfully.");
+        } catch (err) {
+            console.error(err);
+            alert("Database Error: Failed to execute action.");
+        } finally {
+            btn.innerText = "Execute Action to Ledger";
+        }
     }
 
     async function submitAnnouncement() {
@@ -617,25 +721,45 @@
         const content = document.getElementById('ann-content').value;
         const btn = document.getElementById('btn-submit-ann');
         if(!title || !content) return alert("All fields required.");
-        btn.innerText = "Transmitting...";
-        await supabase.from('tng_announcements').insert({ title: title, content: content, author_id: currentUserProfile.id });
-        document.getElementById('ann-title').value = ''; document.getElementById('ann-content').value = '';
-        btn.innerText = "Publish to Network";
-        alert("Broadcast active.");
-        fetchAnnouncements();
+        
+        btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Transmitting...`;
+        
+        try {
+            const { error } = await supabase.from('tng_announcements').insert({ title: title, content: content, author_id: currentUserProfile.id });
+            if (error) throw error;
+            
+            document.getElementById('ann-title').value = ''; document.getElementById('ann-content').value = '';
+            alert("Broadcast active.");
+            fetchAnnouncements();
+        } catch (err) {
+            console.error(err);
+            alert("Database Error: Failed to broadcast notice.");
+        } finally {
+            btn.innerText = "Publish to Network";
+        }
     }
 
     async function deleteAnnouncement(id) {
         if(confirm("Confirm: Permanently delete this corporate broadcast?")) {
-            await supabase.from('tng_announcements').delete().eq('id', id);
-            fetchAnnouncements();
+            try {
+                const { error } = await supabase.from('tng_announcements').delete().eq('id', id);
+                if (error) throw error;
+                fetchAnnouncements();
+            } catch (err) {
+                alert("Database Error: Failed to delete notice.");
+            }
         }
     }
 
     async function deleteLedger(id) {
         if(confirm("CRITICAL WARNING: You are about to permanently erase an official ledger entry. Proceed?")) {
-            await supabase.from('tng_ledger').delete().eq('id', id);
-            fetchGlobalLogs();
+            try {
+                const { error } = await supabase.from('tng_ledger').delete().eq('id', id);
+                if (error) throw error;
+                fetchGlobalLogs();
+            } catch (err) {
+                alert("Database Error: Failed to delete ledger entry.");
+            }
         }
     }
   </script>
